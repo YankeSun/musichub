@@ -242,4 +242,189 @@ async def test_mysource_search():
 
 ---
 
+---
+
+## 🎵 音源插件配置
+
+MusicHub 支持多个音乐平台。以下是各平台的配置指南。
+
+### 支持的平台
+
+| 平台 | 插件名称 | 音质 | 需要订阅 |
+|-----|---------|------|---------|
+| Spotify | `spotify` | 最高 320kbps | Premium (部分功能) |
+| Tidal | `tidal` | Hi-Res Lossless | HiFi / HiFi Plus |
+| Apple Music | `apple_music` | Hi-Res Lossless | Apple Music |
+| QQ 音乐 | `qq_music` | 母带音质 | VIP / VIP+ |
+| 网易云音乐 | `netease` | Hi-Res | VIP / SVIP |
+
+### 配置各平台插件
+
+#### Spotify
+
+```toml
+[sources.spotify]
+enabled = true
+client_id = "你的 Spotify Client ID"
+client_secret = "你的 Spotify Client Secret"
+quality = "high"  # low, normal, high, very_high
+```
+
+**获取 API 凭证：**
+1. 访问 [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. 创建应用获取 Client ID 和 Secret
+3. 运行 `musichub auth spotify` 完成 OAuth 认证
+
+详细配置见 [Spotify 配置指南](platforms/spotify.md)
+
+---
+
+#### Tidal
+
+```toml
+[sources.tidal]
+enabled = true
+client_id = "你的 Tidal Client ID"
+client_secret = "你的 Tidal Client Secret"
+quality = "HI_RES"  # LOW, NORMAL, HIGH, HI_RES, HI_RES_LOSSLESS
+country_code = "US"
+```
+
+**获取 API 凭证：**
+1. 访问 [Tidal Developer Portal](https://developer.tidal.com/)
+2. 创建应用获取 API Key
+3. 需要 Tidal HiFi 订阅
+4. 运行 `musichub auth tidal` 完成认证
+
+详细配置见 [Tidal 配置指南](platforms/tidal.md)
+
+---
+
+#### Apple Music
+
+```toml
+[sources.apple_music]
+enabled = true
+key_id = "你的 Key ID"
+issuer_id = "你的 Issuer ID"
+team_id = "你的 Team ID"
+private_key_path = "~/.config/musichub/AppleMusicKey.p8"
+quality = "lossless"  # standard, high, lossless, hi_res_lossless
+country = "US"
+```
+
+**获取 API 凭证：**
+1. 加入 [Apple Developer Program](https://developer.apple.com/)
+2. 在 App Store Connect 创建 MusicKit 密钥
+3. 下载 `.p8` 私钥文件
+4. 需要 Apple Music 订阅
+
+详细配置见 [Apple Music 配置指南](platforms/apple_music.md)
+
+---
+
+#### QQ 音乐
+
+```toml
+[sources.qq_music]
+enabled = true
+cookie = "uin=xxx; qqmusic_key=xxx; ..."
+quality = "hires"  # standard, high, hires, master
+vip_enabled = true
+```
+
+**获取 Cookie：**
+1. 访问 [QQ 音乐网页版](https://y.qq.com/)
+2. 扫码登录
+3. 从浏览器开发者工具复制 Cookie
+4. 或运行 `musichub auth qqmusic` 自动获取
+
+详细配置见 [QQ 音乐配置指南](platforms/qq_music.md)
+
+---
+
+#### 网易云音乐
+
+```toml
+[sources.netease]
+enabled = true
+cookie = "MUSIC_U=xxx; __csrf=xxx; ..."
+quality = "lossless"  # standard, higher, exhigh, lossless, hires
+vip_enabled = true
+```
+
+**获取 Cookie：**
+1. 访问 [网易云音乐](https://music.163.com/)
+2. 扫码或账号登录
+3. 从浏览器复制 `MUSIC_U` Cookie
+4. 或运行 `musichub auth netease` 自动获取
+
+详细配置见 [网易云配置指南](platforms/netease.md)
+
+---
+
+### 多平台同时使用
+
+你可以在配置中同时启用多个平台：
+
+```toml
+[sources.spotify]
+enabled = true
+# ... spotify 配置
+
+[sources.tidal]
+enabled = true
+# ... tidal 配置
+
+[sources.netease]
+enabled = true
+# ... netease 配置
+
+# 默认使用的音源
+default_source = "netease"
+```
+
+使用时指定音源：
+```bash
+musichub search "歌曲名" --source spotify
+musichub download "链接" --source tidal
+```
+
+---
+
+## 🧪 API 获取教程
+
+### 通用步骤
+
+大多数平台需要 API 凭证。通用流程：
+
+1. **注册开发者账号**
+   - 访问平台开发者网站
+   - 使用普通账号登录或注册
+
+2. **创建应用**
+   - 填写应用名称和描述
+   - 配置 Redirect URI（通常是 `http://localhost:8888/callback`）
+
+3. **获取凭证**
+   - Client ID / API Key
+   - Client Secret / API Secret
+   - 某些平台需要私钥文件（如 Apple Music）
+
+4. **完成认证**
+   - 运行 `musichub auth <平台名>`
+   - 按提示完成 OAuth 流程
+
+### 平台开发者入口
+
+| 平台 | 开发者网站 |
+|-----|-----------|
+| Spotify | https://developer.spotify.com/ |
+| Tidal | https://developer.tidal.com/ |
+| Apple Music | https://developer.apple.com/ |
+| QQ 音乐 | （使用 Cookie 认证） |
+| 网易云音乐 | （使用 Cookie 认证） |
+
+---
+
 *最后更新：2026-03-10*

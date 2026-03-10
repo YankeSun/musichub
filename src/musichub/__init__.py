@@ -9,5 +9,6 @@ __author__ = "MusicHub Team"
 
 from musichub.core.engine import DownloadEngine
 from musichub.core.config import Config
+from musichub.providers import get_provider, list_providers
 
-__all__ = ["DownloadEngine", "Config"]
+__all__ = ["DownloadEngine", "Config", "get_provider", "list_providers"]

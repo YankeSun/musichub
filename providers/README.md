@@ -1,6 +1,6 @@
 # MusicHub 平台插件
 
-统一的音乐平台插件接口，支持 QQ 音乐和网易云音乐。
+统一的音乐平台插件接口，支持 QQ 音乐、网易云音乐、Spotify 和 Tidal。
 
 ## 快速开始
 
@@ -103,6 +103,45 @@ config = {
 }
 
 netease = await create_provider("netease", config)
+```
+
+### Tidal 配置
+
+```python
+config = {
+    # 方式 1: 使用 API Token (如果你有)
+    "api_token": "your_tidal_api_token",
+    
+    # 方式 2: 使用客户端凭证 (默认已配置，通常不需要修改)
+    "client_id": "km8T9pS355y7dd",
+    "client_secret": "66k2C6IZmV7cbrQUN99VqKzrN5WQ33J2oZ7Cz2b5sNA=",
+    
+    # 音质设置
+    "quality": "LOSSLESS",  # 或 "HI_RES" (需要 HiFi Plus 订阅)
+    
+    # 其他配置
+    "timeout": 30,
+    "retry_times": 3,
+    "country_code": "US",  # 国家/地区代码
+}
+
+tidal = await create_provider("tidal", config)
+```
+
+#### Tidal 音质说明
+
+- **STANDARD**: 96kbps AAC (免费订阅)
+- **HIGH**: 320kbps AAC (高级订阅)
+- **LOSSLESS**: 16bit/44.1kHz FLAC (需要 HiFi 订阅)
+- **HI_RES**: 24bit/192kHz FLAC (需要 HiFi Plus 订阅)
+
+```python
+# 下载无损音质
+result = await tidal.download(
+    track_id="12345678",
+    save_path=Path("./downloads"),
+    quality=Quality.LOSSLESS  # 或 Quality.HI_RES
+)
 ```
 
 ## API 参考

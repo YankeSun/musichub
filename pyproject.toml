@@ -1,3 +1,135 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "musichub"
+version = "0.1.0"
+description = "插件化聚合音乐下载器 - 支持 Spotify, Tidal, Apple Music, QQ 音乐，网易云音乐"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "MusicHub Team", email = "musichub@example.com"}
+]
+keywords = [
+    "music",
+    "downloader",
+    "spotify",
+    "tidal",
+    "apple-music",
+    "qq-music",
+    "netease",
+    "plugin",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio",
+]
+
+# 核心依赖
+dependencies = [
+    "httpx>=0.25.0",
+    "aiofiles>=23.0.0",
+    "aiosqlite>=0.19.0",
+    "click>=8.1.0",
+    "rich>=13.0.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "structlog>=23.0.0",
+    "mutagen>=1.46.0",
+    "Pillow>=10.0.0",
+    "tomlkit>=0.12.0",
+    "cryptography>=41.0.0",
+    "pyjwt>=2.8.0",
+]
+
+# 可选依赖
+[project.optional-dependencies]
+# Spotify 支持
+spotify = [
+    "spotipy>=2.23.0",
+]
+
+# Tidal 支持
+tidal = [
+    "tidalapi>=0.8.0",
+]
+
+# Apple Music 支持
+apple_music = [
+    "pyjwt>=2.8.0",
+]
+
+# QQ 音乐支持
+qq_music = []
+
+# 网易云音乐支持
+netease = []
+
+# 音频处理
+audio = [
+    "pydub>=0.25.0",
+    "yt-dlp>=2023.0.0",
+]
+
+# GUI 界面
+gui = [
+    "PyQt6>=6.6.0",
+]
+
+# 开发依赖
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.11.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.4.0",
+]
+
+# 完整安装（所有平台支持）
+all = [
+    "musichub[spotify]",
+    "musichub[tidial]",
+    "musichub[apple_music]",
+    "musichub[audio]",
+    "musichub[gui]",
+]
+
+[project.scripts]
+musichub = "musichub.cli:main"
+
+[project.entry-points."musichub.sources"]
+spotify = "musichub.plugins.sources.spotify:SpotifySource"
+tidal = "musichub.plugins.sources.tidal:TidalSource"
+apple_music = "musichub.plugins.sources.apple_music:AppleMusicSource"
+qq_music = "musichub.plugins.sources.qq_music:QQMusicSource"
+netease = "musichub.plugins.sources.netease:NeteaseSource"
+
+[project.entry-points."musichub.downloaders"]
+default = "musichub.plugins.downloaders.default:DefaultDownloader"
+
+[project.entry-points."musichub.exporters"]
+default = "musichub.plugins.exporters.default:DefaultExporter"
+
+[project.urls]
+Homepage = "https://github.com/musichub/musichub"
+Documentation = "https://github.com/musichub/musichub/docs"
+Repository = "https://github.com/musichub/musichub"
+Issues = "https://github.com/musichub/musichub/issues"
+
+# Pytest 配置
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
@@ -14,3 +146,38 @@ markers = [
     "integration: mark test as integration test",
     "slow: mark test as slow running",
 ]
+
+# Black 配置
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311", "py312"]
+
+# Ruff 配置
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (handled by black)
+    "B008",  # do not perform function calls in argument defaults
+]
+
+# Mypy 配置
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
