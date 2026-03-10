@@ -81,6 +81,11 @@ audio = [
     "yt-dlp>=2023.0.0",
 ]
 
+# YouTube Music 支持
+youtube_music = [
+    "yt-dlp>=2023.0.0",
+]
+
 # GUI 界面
 gui = [
     "PyQt6>=6.6.0",
@@ -103,6 +108,7 @@ all = [
     "musichub[spotify]",
     "musichub[tidial]",
     "musichub[apple_music]",
+    "musichub[youtube_music]",
     "musichub[audio]",
     "musichub[gui]",
 ]
@@ -116,6 +122,7 @@ tidal = "musichub.plugins.sources.tidal:TidalSource"
 apple_music = "musichub.plugins.sources.apple_music:AppleMusicSource"
 qq_music = "musichub.plugins.sources.qq_music:QQMusicSource"
 netease = "musichub.plugins.sources.netease:NeteaseSource"
+youtube_music = "musichub.providers.youtube_music:YouTubeMusicProvider"
 
 [project.entry-points."musichub.downloaders"]
 default = "musichub.plugins.downloaders.default:DefaultDownloader"

@@ -9,6 +9,7 @@ MusicHub 平台插件包
 - spotify: Spotify
 - tidal: Tidal
 - apple_music: Apple Music
+- deezer: Deezer
 """
 
 from .base import (
@@ -31,6 +32,7 @@ from .netease import NetEaseProvider, NetEaseConfig
 from .spotify import SpotifyProvider, SpotifyConfig
 from .tidal import TidalProvider, TidalConfig
 from .apple_music import AppleMusicProvider, AppleMusicConfig
+from .deezer import DeezerProvider, DeezerConfig
 
 
 # 平台注册表
@@ -40,6 +42,7 @@ PROVIDERS = {
     "spotify": SpotifyProvider,
     "tidal": TidalProvider,
     "apple_music": AppleMusicProvider,
+    "deezer": DeezerProvider,
 }
 
 # 配置类注册表
@@ -49,6 +52,7 @@ PROVIDER_CONFIGS = {
     "spotify": SpotifyConfig,
     "tidal": TidalConfig,
     "apple_music": AppleMusicConfig,
+    "deezer": DeezerConfig,
 }
 
 
@@ -57,7 +61,7 @@ def get_provider(platform: str, config: dict = None):
     获取指定平台的插件实例
     
     Args:
-        platform: 平台名称 ('qq_music', 'netease', 'spotify', 'tidal', 'apple_music')
+        platform: 平台名称 ('qq_music', 'netease', 'spotify', 'tidal', 'apple_music', 'deezer')
         config: 配置字典
         
     Returns:
@@ -116,6 +120,8 @@ __all__ = [
     "TidalConfig",
     "AppleMusicProvider",
     "AppleMusicConfig",
+    "DeezerProvider",
+    "DeezerConfig",
     # 工厂函数
     "get_provider",
     "create_provider",

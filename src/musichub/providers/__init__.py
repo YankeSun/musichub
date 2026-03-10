@@ -8,18 +8,26 @@ from typing import Dict, Any, Optional, Type
 from musichub.plugins.base import SourcePlugin
 
 # 导入所有可用的 providers
-from musichub.providers.apple_music import AppleMusicProvider, create_provider
+from musichub.providers.apple_music import AppleMusicProvider, create_provider as create_apple_music_provider
+from musichub.providers.qobuz import QobuzProvider, create_provider as create_qobuz_provider
+from musichub.providers.youtube_music import YouTubeMusicProvider, create_provider as create_youtube_music_provider
 
 __all__ = [
     "AppleMusicProvider",
+    "QobuzProvider",
+    "YouTubeMusicProvider",
     "create_provider",
     "get_provider",
     "list_providers",
+    "register_provider",
+    "unregister_provider",
 ]
 
 # 已注册的 providers
 _PROVIDERS: Dict[str, Type[SourcePlugin]] = {
     "apple_music": AppleMusicProvider,
+    "qobuz": QobuzProvider,
+    "youtube_music": YouTubeMusicProvider,
 }
 
 
